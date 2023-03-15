@@ -4,6 +4,7 @@ import string
 import time
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Function to generate a random string
 def random_string(length=10):
@@ -26,6 +27,9 @@ def display_entry(entry):
     st.markdown(f"**User**: {user_prompt}")
     if isinstance(response, str):
         st.markdown(f"**Bot**: {response}")
+    elif isinstance(response, pd.DataFrame):
+        st.write("**Bot**: Here are 5 randomly selected rows from the uploaded CSV file:")
+        st.write(response)
     else:
         st.write("**Bot**: Here's your random scatter plot:")
         st.pyplot(response)
@@ -48,13 +52,21 @@ def on_change():
         st.session_state.user_input = ""
         st.experimental_rerun()
 
-# Streamlit app
 def main():
     st.title("Simple Chatbot")
 
     # Initialize conversation history
     if "conversation_history" not in st.session_state:
         st.session_state.conversation_history = []
+
+    # File uploader
+    uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
+
+    # Process the uploaded CSV file
+    if uploaded_file is not None:
+        df = pd.read_csv(uploaded_file)
+        random_sample = df.sample(n=5)
+        st.session_state.conversation_history.append(("Uploaded CSV file", random_sample))
 
     # Display conversation history
     for entry in st.session_state.conversation_history:
