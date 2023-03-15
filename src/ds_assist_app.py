@@ -2,16 +2,43 @@ import streamlit as st
 import random
 import string
 import time
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Function to generate a random string
 def random_string(length=10):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
+def random_scatter_plot():
+    N = 50
+    x = np.random.rand(N)
+    y = np.random.rand(N)
+    colors = np.random.rand(N)
+    area = (30 * np.random.rand(N))**2
+    
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, s=area, c=colors, alpha=0.5)
+    
+    return fig
+
+def display_entry(entry):
+    user_prompt, response = entry
+    st.markdown(f"**User**: {user_prompt}")
+    if isinstance(response, str):
+        st.markdown(f"**Bot**: {response}")
+    else:
+        st.write("**Bot**: Here's your random scatter plot:")
+        st.pyplot(response)
+    st.markdown("---")
+
 def on_change():
     if st.session_state.user_input:
-        # Random response generation
-        response_length = random.randint(5, 15)
-        random_response = random_string(response_length)
+        if "graph" in st.session_state.user_input.lower():
+            random_response = random_scatter_plot()
+        else:
+            # Random response generation
+            response_length = random.randint(5, 15)
+            random_response = random_string(response_length)
 
         # Add the user prompt and response to the conversation history
         st.session_state.conversation_history.append((st.session_state.user_input, random_response))
@@ -30,12 +57,8 @@ def main():
         st.session_state.conversation_history = []
 
     # Display conversation history
-    st.markdown("---")
     for entry in st.session_state.conversation_history:
-        user_prompt, response = entry
-        st.markdown(f"**User**: {user_prompt}")
-        st.markdown(f"**Bot**: {response}")
-        st.markdown("---")
+        display_entry(entry)
 
     # Input prompt placeholder
     user_input_placeholder = st.empty()
