@@ -13,11 +13,11 @@ import openai
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Function to generate response using ChatGPT API
-def generate_chatgpt_response(prompt, conversation_history):
+def generate_chatgpt_response(prompt, conversation_history, system_prompt):
     model_engine = "gpt-3.5-turbo"
 
     # Construct the list of messages for the API
-    messages = [{"role": "system", "content": "You are a helpful assistant."}]
+    messages = [{"role": "system", "content": system_prompt}]
     for entry in conversation_history:
         user_prompt, response = entry
         messages.append({"role": "user", "content": user_prompt})
@@ -35,11 +35,8 @@ def generate_chatgpt_response(prompt, conversation_history):
         temperature=0.7,
     )
 
-    print(response)
     message = response["choices"][0]["message"]["content"]
-    #message = response.choices[0].text.strip()
     return message
-
 
 
 def random_scatter_plot():
@@ -67,21 +64,40 @@ def display_entry(entry):
         st.pyplot(response)
     st.markdown("---")
 
+csv_upload_file_added_to_conversation = False
+
 def on_change():
+    global csv_upload_file_added_to_conversation
     if st.session_state.user_input:
         if "graph" in st.session_state.user_input.lower():
             random_response = random_scatter_plot()
+            st.session_state.conversation_history.append((st.session_state.user_input, random_response))
+        
+        elif (st.session_state.csv_uploaded) and (csv_upload_file_added_to_conversation==False):
+            st.session_state.conversation_history.append(("Uploaded a CSV file", st.session_state.random_sample))
+            csv_upload_file_added_to_conversation = True
+       
         else:
             # Use ChatGPT to generate a response considering conversation history
-            random_response = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history)
+            random_response = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
 
         # Add the user prompt and response to the conversation history
-        st.session_state.conversation_history.append((st.session_state.user_input, random_response))
+            st.session_state.conversation_history.append((st.session_state.user_input, random_response))
+
+        # Add the CSV upload message only once
+        #if st.session_state.csv_uploaded:
+        #   st.session_state.conversation_history.append(("Uploaded a CSV file", st.session_state.random_sample))
+            #st.write(st.session_state.random_sample) 
+            #st.session_state.csv_uploaded = False
 
         # Clear the input field by updating the text input widget's key
         unique_key = f"user_input_{time.time()}"
         st.session_state.user_input = ""
         st.experimental_rerun()
+
+
+if "csv_uploaded" not in st.session_state:
+        st.session_state.csv_uploaded = False
 
 def main():
     st.title("Simple Chatbot")
@@ -89,15 +105,38 @@ def main():
     # Initialize conversation history
     if "conversation_history" not in st.session_state:
         st.session_state.conversation_history = []
+    
+    if "system_prompt" not in st.session_state:
+        st.session_state.system_prompt = "You are a helpful assistant. Answer concisely"
+    
+    #if "csv_uploaded" not in st.session_state:
+    #    st.session_state.csv_uploaded = False
 
     # File uploader
+
+    #if st.session_state.csv_uploaded == False:
     uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
 
     # Process the uploaded CSV file
-    if uploaded_file is not None:
+    if (uploaded_file is not None) and (st.session_state.csv_uploaded == False):
         df = pd.read_csv(uploaded_file)
         random_sample = df.sample(n=5)
         st.session_state.conversation_history.append(("Uploaded CSV file", random_sample))
+
+        st.session_state.random_sample = random_sample
+
+        df_str = df.to_string(header=True,
+                              index=False,
+                              index_names=False).split('\n')
+        
+        df_str = repr([','.join(ele.split()) for ele in df_str])
+        #print(df_str)
+
+        st.session_state.system_prompt = f"You are a helpful assistant. Answer concisely. The user has uploaded a CSV file. The data is:\n\n {df_str}"
+
+        st.session_state.csv_uploaded = True
+
+        print('I am here again')
 
     # Display conversation history
     for entry in st.session_state.conversation_history:
@@ -108,6 +147,7 @@ def main():
 
     # Add the text input widget to the placeholder, with on_change=True
     user_input = user_input_placeholder.text_input("Enter your prompt:", key="user_input", on_change=on_change, args=[])
+    print()
 
 if __name__ == "__main__":
     main()
