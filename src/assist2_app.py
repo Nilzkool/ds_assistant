@@ -2,59 +2,69 @@ import streamlit as st
 import time
 from io import StringIO
 import sys
+import pandas as pd
 
 def execute_python_statement(statement):
     try:
-        # Redirect stdout to a StringIO object
         original_stdout = sys.stdout
         sys.stdout = captured_output = StringIO()
 
         if "locals_dict" not in st.session_state:
             st.session_state.locals_dict = {}
 
-        exec(statement, globals(), st.session_state.locals_dict)
+        output = eval(statement, globals(), st.session_state.locals_dict)
+        if output is None:
+            exec(statement, globals(), st.session_state.locals_dict)
+            sys.stdout = original_stdout
+            output = captured_output.getvalue().strip()
 
-        # Restore original stdout
-        sys.stdout = original_stdout
-
-        output = captured_output.getvalue()
-        return output.strip()
+        return output
 
     except Exception as e:
         return str(e)
 
 def on_change():
     if st.session_state.user_input:
-        # Execute the Python statement and get the output
         output = execute_python_statement(st.session_state.user_input)
-
-        # Add the user prompt and response to the conversation history
         st.session_state.conversation_history.append((st.session_state.user_input, output))
-
-        # Clear the input field by updating the text input widget's key
         unique_key = f"user_input_{time.time()}"
         st.session_state.user_input = ""
         st.experimental_rerun()
 
-# Streamlit app
+def handle_file_upload(file):
+    if file:
+        df = pd.read_csv(file)
+        st.session_state.locals_dict['df'] = df
+        st.session_state.conversation_history.append(("Upload CSV", "The DataFrame has been uploaded"))
+        st.experimental_rerun()
+
 def main():
     st.title("Python Statement Executor")
 
-    # Initialize conversation history
     if "conversation_history" not in st.session_state:
         st.session_state.conversation_history = []
 
-    # Display conversation history
+    if "locals_dict" not in st.session_state:
+        st.session_state.locals_dict = {}
+
+    if 'df' not in st.session_state.locals_dict:
+        uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], key="csv_uploader")
+        if uploaded_file:
+            handle_file_upload(uploaded_file)
+    else:
+        st.write("CSV file has been uploaded. File uploader is now disabled.")
+
     st.markdown("**Conversation History:**")
     for entry in st.session_state.conversation_history:
         user_prompt, response = entry
         st.markdown(f"- **Input**: {user_prompt}")
-        st.markdown(f"- **Output**: {response}")
+        if isinstance(response, pd.DataFrame):
+            st.dataframe(response)
+        else:
+            st.markdown(f"- **Output**: {response}")
 
-    # Input prompt placeholder
     user_input_placeholder = st.empty()
 
-    # Add the text input widget to the placeholder, with on_change=True
     user_input = user_input_placeholder.text_input("Enter your Python statement:", key="user_input", on_change=on_change, args=[])
 
 if __name__ == "__main__":
