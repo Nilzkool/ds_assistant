@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import random
 import string
@@ -5,10 +6,41 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import openai
 
-# Function to generate a random string
-def random_string(length=10):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+# Set up OpenAI API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+# Function to generate response using ChatGPT API
+def generate_chatgpt_response(prompt, conversation_history):
+    model_engine = "gpt-3.5-turbo"
+
+    # Construct the list of messages for the API
+    messages = [{"role": "system", "content": "You are a helpful assistant."}]
+    for entry in conversation_history:
+        user_prompt, response = entry
+        messages.append({"role": "user", "content": user_prompt})
+        if isinstance(response, str):
+            messages.append({"role": "assistant", "content": response})
+
+    # Add the current prompt
+    messages.append({"role": "user", "content": prompt})
+
+    response = openai.ChatCompletion.create(
+        model=model_engine,
+        messages=messages,
+        max_tokens=50,
+        n=1,
+        temperature=0.7,
+    )
+
+    print(response)
+    message = response["choices"][0]["message"]["content"]
+    #message = response.choices[0].text.strip()
+    return message
+
+
 
 def random_scatter_plot():
     N = 50
@@ -40,9 +72,8 @@ def on_change():
         if "graph" in st.session_state.user_input.lower():
             random_response = random_scatter_plot()
         else:
-            # Random response generation
-            response_length = random.randint(5, 15)
-            random_response = random_string(response_length)
+            # Use ChatGPT to generate a response considering conversation history
+            random_response = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history)
 
         # Add the user prompt and response to the conversation history
         st.session_state.conversation_history.append((st.session_state.user_input, random_response))
