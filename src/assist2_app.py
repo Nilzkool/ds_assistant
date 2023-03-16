@@ -5,6 +5,7 @@ import sys
 import pandas as pd
 import openai
 import os
+import re
 
 # Fetch openai api key
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -33,6 +34,7 @@ def generate_chatgpt_response(prompt, conversation_history, system_prompt):
     text_output = response["choices"][0]["message"]["content"]
     return text_output
 
+
 def execute_python_statement(statement):
     original_stdout = sys.stdout
     sys.stdout = captured_output = StringIO()
@@ -40,33 +42,41 @@ def execute_python_statement(statement):
     if "locals_dict" not in st.session_state:
         st.session_state.locals_dict = {}
 
-    output = eval(statement, globals(), st.session_state.locals_dict)
-    if output is None:
+    try:
         exec(statement, globals(), st.session_state.locals_dict)
         sys.stdout = original_stdout
         output = captured_output.getvalue().strip()
+        if output == "":
+            try:
+                output = eval(statement, globals(), st.session_state.locals_dict)
+            except:
+                output = None
+    except SyntaxError:
+        raise SyntaxError("Invalid syntax")
 
     return output
-
 
 
 def on_change():
     if st.session_state.user_input:
         try:
             output = execute_python_statement(st.session_state.user_input)
-        except:
+        except SyntaxError:
             output = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
+        except Exception as e:
+            output = f"Error: {e}"
 
         st.session_state.conversation_history.append((st.session_state.user_input, output))
         unique_key = f"user_input_{time.time()}"
         st.session_state.user_input = ""
         st.experimental_rerun()
 
+
 def handle_file_upload(file):
     if file:
         df = pd.read_csv(file)
         st.session_state.locals_dict['df'] = df
-        st.session_state.conversation_history.append(("Upload CSV", "A csv has been uploaded into a pandas dataframe object called df"))
+        st.session_state.conversation_history.append(("Upload CSV", "The columns of the uploaded dataframe are " + repr(list(df.columns))))
         st.experimental_rerun()
 
 def main():
@@ -79,7 +89,7 @@ def main():
         st.session_state.locals_dict = {}
     
     if "system_prompt" not in st.session_state:
-        st.session_state.system_prompt = "You are a data science assistant. Answer concisely and factually"
+        st.session_state.system_prompt = "You are a data science assistant. Assume that a csv file has been uploaded into a pandas dataframe variable called df. If the prompt requires processing the dataframe for the output, respond only by generating python code to processes the dataframe df. If the prompt does not require processing the dataframe, respond I do not how to answer that"
 
     if 'df' not in st.session_state.locals_dict:
         uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], key="csv_uploader")
