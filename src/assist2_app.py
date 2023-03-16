@@ -34,31 +34,27 @@ def generate_chatgpt_response(prompt, conversation_history, system_prompt):
     return text_output
 
 def execute_python_statement(statement):
-    #try:
-        original_stdout = sys.stdout
-        sys.stdout = captured_output = StringIO()
+    original_stdout = sys.stdout
+    sys.stdout = captured_output = StringIO()
 
-        if "locals_dict" not in st.session_state:
-            st.session_state.locals_dict = {}
+    if "locals_dict" not in st.session_state:
+        st.session_state.locals_dict = {}
 
-        output = eval(statement, globals(), st.session_state.locals_dict)
-        if output is None:
-            exec(statement, globals(), st.session_state.locals_dict)
-            sys.stdout = original_stdout
-            output = captured_output.getvalue().strip()
+    output = eval(statement, globals(), st.session_state.locals_dict)
+    if output is None:
+        exec(statement, globals(), st.session_state.locals_dict)
+        sys.stdout = original_stdout
+        output = captured_output.getvalue().strip()
 
-        return output
+    return output
 
-    #except Exception as e:
-    #    return str(e)
+
 
 def on_change():
     if st.session_state.user_input:
         try:
             output = execute_python_statement(st.session_state.user_input)
         except:
-            #output = generate_chatgpt_response(st.session_state.user_input)
-
             output = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
 
         st.session_state.conversation_history.append((st.session_state.user_input, output))
@@ -70,7 +66,7 @@ def handle_file_upload(file):
     if file:
         df = pd.read_csv(file)
         st.session_state.locals_dict['df'] = df
-        st.session_state.conversation_history.append(("Upload CSV", "The csv has been uploaded into a pandas dataframe object called df"))
+        st.session_state.conversation_history.append(("Upload CSV", "A csv has been uploaded into a pandas dataframe object called df"))
         st.experimental_rerun()
 
 def main():
