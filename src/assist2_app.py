@@ -6,6 +6,8 @@ import pandas as pd
 import openai
 import os
 import re
+import ast
+
 
 # Fetch openai api key
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -27,11 +29,12 @@ def generate_chatgpt_response(prompt, conversation_history, system_prompt):
     response = openai.ChatCompletion.create(
         model=model_engine,
         messages=messages,
-        max_tokens=50,
+        max_tokens=1000,
         n=1,
-        temperature=0.7)
+        temperature=0.20)
 
     text_output = response["choices"][0]["message"]["content"]
+    
     return text_output
 
 
@@ -42,34 +45,55 @@ def execute_python_statement(statement):
     if "locals_dict" not in st.session_state:
         st.session_state.locals_dict = {}
 
-    try:
-        exec(statement, globals(), st.session_state.locals_dict)
-        sys.stdout = original_stdout
-        output = captured_output.getvalue().strip()
-        if output == "":
-            try:
-                output = eval(statement, globals(), st.session_state.locals_dict)
-            except:
-                output = None
-    except SyntaxError:
-        raise SyntaxError("Invalid syntax")
+    lines = statement.split('\n')
+
+    for line in lines:
+        try:
+            exec(line, globals(), st.session_state.locals_dict)
+        except Exception as e:
+            sys.stdout = original_stdout
+            return f"Error executing extracted code: {e}. Original code: {statement}"
+
+    sys.stdout = original_stdout
+    output = captured_output.getvalue().strip()
+    if output == "":
+        output = None
 
     return output
 
 
 def on_change():
     if st.session_state.user_input:
+        output = ""
         try:
+            # Try to parse the user input as Python code
+            ast.parse(st.session_state.user_input)
+            is_python_code = True
             output = execute_python_statement(st.session_state.user_input)
-        except SyntaxError:
-            output = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
-        except Exception as e:
-            output = f"Error: {e}"
+        except:
+            is_python_code = False
+
+        if not is_python_code:
+            try:
+                output = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
+                code_snippet = re.search(r'<\s*(.*?)\s*>', output, re.DOTALL) or re.search(r'```python\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```(?:python)?\n?(.*?)(?:\n?```)?', output, re.DOTALL)
+                
+                if code_snippet:
+                    try:
+                        code = code_snippet.group(1)
+                        output = execute_python_statement(code)
+                        output = f"{output}. \n```python\n{code.strip()}\n```"
+                    except Exception as e:
+                        output = f"Error executing extracted code: {e}. Original ChatGPT response: {output}"
+            except Exception as e:
+                output = f"Error: {e}"
 
         st.session_state.conversation_history.append((st.session_state.user_input, output))
         unique_key = f"user_input_{time.time()}"
         st.session_state.user_input = ""
         st.experimental_rerun()
+
+
 
 
 def handle_file_upload(file):
@@ -89,14 +113,24 @@ def main():
         st.session_state.locals_dict = {}
     
     if "system_prompt" not in st.session_state:
-        st.session_state.system_prompt = "You are a data science assistant. Assume that a csv file has been uploaded into a pandas dataframe variable called df. If the prompt requires processing the dataframe for the output, respond only by generating python code to processes the dataframe df. If the prompt does not require processing the dataframe, respond I do not how to answer that"
+        #st.session_state.system_prompt = "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. If the prompt requires processing df to get an output, respond by generating the python code by referring to df. Always make sure to include a print statement to display the final output and wrap the code inside ``` and . If the prompt does not require processing df, respond I do not how to answer that"
+        st.session_state.system_prompt = (
+                                        "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. "
+                                        "All the user prompts will be related to the dataframe df. "
+                                        "Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. "
+                                        "The python code must include a print statement to output the solution. "
+                                        "Your Python code must be wrapped inside < >. Nothing else will do. "
+                                        #"The code must be wrapped inside triple backticks (```), followed by 'python' and a newline, then the code, and finally triple backticks to close the code block. "
+                                        "If you cannot respond only with a python code in the correct format, say I am sorry for now. "
+
+                                         )
 
     if 'df' not in st.session_state.locals_dict:
         uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], key="csv_uploader")
         if uploaded_file:
             handle_file_upload(uploaded_file)
     else:
-        st.write("CSV file has been uploaded. File uploader is now disabled.")
+        st.write("CSV file has been loaded into a pandas dataframe df")
 
     st.markdown("**Conversation History:**")
     for entry in st.session_state.conversation_history:
