@@ -98,6 +98,8 @@ def on_change():
                             output = f"{output}. \n```python\n{code.strip()}\n```"
                     except Exception as e:
                         output = f"Error executing extracted code: {e}. Original ChatGPT response: {output}"
+                else:
+                    plot = None
             except Exception as e:
                 output = f"Error: {e}"
 
