@@ -71,19 +71,21 @@ def execute_python_statement(statement):
 
     return output, plot, None
 
+def is_single_line_python_code(code):
+    try:
+        ast.parse(code)
+        return True
+    except:
+        return False
+
 
 def on_change():
     if st.session_state.user_input:
         output = ""
-        try:
-            # Try to parse the user input as Python code
-            ast.parse(st.session_state.user_input)
-            is_python_code = True
-            output, plot = execute_python_statement(st.session_state.user_input)
-        except:
-            is_python_code = False
-
-        if not is_python_code:
+        
+        if is_single_line_python_code(st.session_state.user_input):
+            output, plot,_ = execute_python_statement(st.session_state.user_input)
+        else:
             try:
                 output = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
                 code_snippet = re.search(r'<\s*(.*?)\s*>', output, re.DOTALL) or re.search(r'```python\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```(?:python)?\n?(.*?)(?:\n?```)?', output, re.DOTALL)
