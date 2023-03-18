@@ -51,19 +51,26 @@ def execute_python_statement(statement):
 
     lines = statement.split('\n')
 
+    plot_output = None
     for line in lines:
         try:
-            exec(line, globals(), st.session_state.locals_dict)
+            if 'plt.show()' in line:
+                buf = BytesIO()
+                plt.savefig(buf, format='png')
+                plt.close()
+                plot_output = base64.b64encode(buf.getvalue()).decode()
+            else:
+                exec(line, globals(), st.session_state.locals_dict)
         except Exception as e:
             sys.stdout = original_stdout
-            return f"Error executing extracted code: {e}. Original code: {statement}"
+            return f"Error executing extracted code: {e}. Original code: {statement}", plot_output
 
     sys.stdout = original_stdout
     output = captured_output.getvalue().strip()
     if output == "":
         output = None
 
-    return output
+    return output, plot_output
 
 def on_change():
     if st.session_state.user_input:
@@ -72,7 +79,7 @@ def on_change():
             # Try to parse the user input as Python code
             ast.parse(st.session_state.user_input)
             is_python_code = True
-            output = execute_python_statement(st.session_state.user_input)
+            output, plot = execute_python_statement(st.session_state.user_input)
         except:
             is_python_code = False
 
@@ -80,21 +87,27 @@ def on_change():
             try:
                 output = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
                 code_snippet = re.search(r'<\s*(.*?)\s*>', output, re.DOTALL) or re.search(r'```python\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```(?:python)?\n?(.*?)(?:\n?```)?', output, re.DOTALL)
-                
+
                 if code_snippet:
                     try:
                         code = code_snippet.group(1)
-                        output = execute_python_statement(code)
-                        output = f"{output}. \n```python\n{code.strip()}\n```"
+                        output, plot = execute_python_statement(code)
+                        if plot:
+                            output = f"```python\n{code.strip()}\n```"
+                        else:
+                            output = f"{output}. \n```python\n{code.strip()}\n```"
                     except Exception as e:
                         output = f"Error executing extracted code: {e}. Original ChatGPT response: {output}"
             except Exception as e:
                 output = f"Error: {e}"
 
+        if plot:
+            output = (output if output else "Here's the requested plot:", plot)
         st.session_state.conversation_history.append((st.session_state.user_input, output))
         unique_key = f"user_input_{time.time()}"
         st.session_state.user_input = ""
         st.experimental_rerun()
+
 
 def handle_file_upload(file):
     if file:
@@ -107,12 +120,27 @@ def display_conversation():
     st.markdown("**Conversation History:**")
     for entry in st.session_state.conversation_history:
         user_prompt, response = entry
+        if isinstance(response, tuple):
+            response_text, plot = response
+        else:
+            response_text, plot = response, None
         st.markdown(f"**In**: {user_prompt}")
-        st.markdown(f"**Out**: {response}")
+        if plot:
+            code_block = re.search(r'```python\n?(.*?)\n?```', response_text, re.DOTALL)
+            if code_block:
+                code = code_block.group(1)
+                response_text = response_text.replace(f"```python\n{code}\n```", "")
+        st.markdown(f"**Out**: {response_text}")
+        if plot:
+            st.image(base64.b64decode(plot), caption="Generated plot", use_column_width=True)
+            st.code(code, language='python')
+
+
+
 
 def system_prompt_text():
     sys_prompt = (
-                    "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. "
+                    "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries are sklearn, numpy, pandas and matplotlib."
                     "All the user prompts will be related to the dataframe df. "
                     "Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. "
                     "The python code must include a print statement to output the solution. "
