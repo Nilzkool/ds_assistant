@@ -1,6 +1,10 @@
 x=5
 
-Show me a random sample of the dataframe. Use pretty table.
+len(df)
+
+print(len(df))
+
+Show me a random sample of 5 rows the dataframe. 
 
 What is the maximum in sepal width?
 

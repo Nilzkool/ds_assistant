@@ -35,7 +35,7 @@ def generate_chatgpt_response(prompt, conversation_history, system_prompt):
         messages=messages,
         max_tokens=1000,
         n=1,
-        temperature=0.20)
+        temperature=0)
 
     text_output = response["choices"][0]["message"]["content"]
     
