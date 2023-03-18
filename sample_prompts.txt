@@ -9,12 +9,13 @@ This is such a weird code. The user should not have to define how many prompt sh
 
 Assuming that the dataset has been split into training and testing sets, and the logistic regression model has been trained on the training set, the following code can be used to calculate the training loss:
 
+x=5
 
 What is the maximum in sepal width?
 
 
 What is the dot product between columns sepal width and petal length?
 
-Train a logistic regression model on all of the samples of df. The input columns are sepal length and sepal width the output column is species. Report the training loss.
+Train a logistic regression model on all of the samples of df. The input columns are sepal length and sepal width the output column is species. Report the training accuracy.
 
 Plot a histogram of sepal width.

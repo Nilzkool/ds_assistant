@@ -103,6 +103,24 @@ def handle_file_upload(file):
         st.session_state.conversation_history.append(("Upload CSV", "The columns of the uploaded dataframe are " + repr(list(df.columns))))
         st.experimental_rerun()
 
+def display_conversation():
+    st.markdown("**Conversation History:**")
+    for entry in st.session_state.conversation_history:
+        user_prompt, response = entry
+        st.markdown(f"**In**: {user_prompt}")
+        st.markdown(f"**Out**: {response}")
+
+def system_prompt_text():
+    sys_prompt = (
+                    "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. "
+                    "All the user prompts will be related to the dataframe df. "
+                    "Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. "
+                    "The python code must include a print statement to output the solution. "
+                    "Your Python code must be wrapped inside < >. Nothing else will do. "
+                    "If you cannot respond only with a python code in the correct format, say I am sorry for now. "
+                )
+    return sys_prompt
+
 def main():
     st.title("My awesome data science assistant")
 
@@ -113,14 +131,7 @@ def main():
         st.session_state.locals_dict = {}
     
     if "system_prompt" not in st.session_state:
-        st.session_state.system_prompt = (
-            "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. "
-            "All the user prompts will be related to the dataframe df. "
-            "Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. "
-            "The python code must include a print statement to output the solution. "
-            "Your Python code must be wrapped inside < >. Nothing else will do. "
-            "If you cannot respond only with a python code in the correct format, say I am sorry for now. "
-        )
+        st.session_state.system_prompt =system_prompt_text()
 
     if 'df' not in st.session_state.locals_dict:
         uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], key="csv_uploader")
@@ -129,11 +140,7 @@ def main():
     else:
         st.write("CSV file has been loaded into a pandas dataframe df")
 
-    st.markdown("**Conversation History:**")
-    for entry in st.session_state.conversation_history:
-        user_prompt, response = entry
-        st.markdown(f"**In**: {user_prompt}")
-        st.markdown(f"**Out**: {response}")
+    display_conversation()
 
     user_input_placeholder = st.empty()
     user_input = user_input_placeholder.text_input("Enter your Python statement or ask a question:", key="user_input", on_change=on_change, args=[])
