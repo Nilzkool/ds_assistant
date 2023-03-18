@@ -1,4 +1,5 @@
 import streamlit as st
+import io
 import time
 from io import StringIO
 import sys
@@ -7,7 +8,10 @@ import openai
 import os
 import re
 import ast
-
+import matplotlib.pyplot as plt
+from io import BytesIO
+import base64
+import matplotlib.figure
 
 # Fetch openai api key
 openai.api_key = os.environ["OPENAI_API_KEY"]
@@ -37,7 +41,7 @@ def generate_chatgpt_response(prompt, conversation_history, system_prompt):
     
     return text_output
 
-
+# working code without plots
 def execute_python_statement(statement):
     original_stdout = sys.stdout
     sys.stdout = captured_output = StringIO()
@@ -60,7 +64,6 @@ def execute_python_statement(statement):
         output = None
 
     return output
-
 
 def on_change():
     if st.session_state.user_input:
@@ -93,9 +96,6 @@ def on_change():
         st.session_state.user_input = ""
         st.experimental_rerun()
 
-
-
-
 def handle_file_upload(file):
     if file:
         df = pd.read_csv(file)
@@ -113,17 +113,14 @@ def main():
         st.session_state.locals_dict = {}
     
     if "system_prompt" not in st.session_state:
-        #st.session_state.system_prompt = "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. If the prompt requires processing df to get an output, respond by generating the python code by referring to df. Always make sure to include a print statement to display the final output and wrap the code inside ``` and . If the prompt does not require processing df, respond I do not how to answer that"
         st.session_state.system_prompt = (
-                                        "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. "
-                                        "All the user prompts will be related to the dataframe df. "
-                                        "Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. "
-                                        "The python code must include a print statement to output the solution. "
-                                        "Your Python code must be wrapped inside < >. Nothing else will do. "
-                                        #"The code must be wrapped inside triple backticks (```), followed by 'python' and a newline, then the code, and finally triple backticks to close the code block. "
-                                        "If you cannot respond only with a python code in the correct format, say I am sorry for now. "
-
-                                         )
+            "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. "
+            "All the user prompts will be related to the dataframe df. "
+            "Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. "
+            "The python code must include a print statement to output the solution. "
+            "Your Python code must be wrapped inside < >. Nothing else will do. "
+            "If you cannot respond only with a python code in the correct format, say I am sorry for now. "
+        )
 
     if 'df' not in st.session_state.locals_dict:
         uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], key="csv_uploader")
@@ -136,14 +133,11 @@ def main():
     for entry in st.session_state.conversation_history:
         user_prompt, response = entry
         st.markdown(f"**In**: {user_prompt}")
-        if isinstance(response, pd.DataFrame):
-            st.dataframe(response)
-        else:
-            st.markdown(f"**Out**: {response}")
+        st.markdown(f"**Out**: {response}")
 
     user_input_placeholder = st.empty()
-
     user_input = user_input_placeholder.text_input("Enter your Python statement or ask a question:", key="user_input", on_change=on_change, args=[])
+
 
 if __name__ == "__main__":
     main()
