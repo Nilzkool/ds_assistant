@@ -82,7 +82,7 @@ def is_single_line_python_code(code):
 def on_change():
     if st.session_state.user_input:
         output = ""
-        
+
         if is_single_line_python_code(st.session_state.user_input):
             output, plot,_ = execute_python_statement(st.session_state.user_input)
         else:
