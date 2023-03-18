@@ -4,6 +4,8 @@ len(df)
 
 print(len(df))
 
+## iris prompts
+
 Show me a random sample of 5 rows the dataframe. 
 
 What is the maximum in sepal width?
@@ -18,10 +20,12 @@ What is the dot product between columns sepal width and petal length?
 
 Train a logistic regression model on all of the samples of df. The input columns are sepal length and sepal width the output column is species. Report the training accuracy.
 
+"Test here code copying by modifying train to test acc"
+
 Plot a histogram of sepal width.
 
-Plot a scatterplot between sepal length and petal length.
+Plot a scatterplot between sepal length and petal length. Hightlight the species.
 
 Plot the first two principle components. Ignore the column Id and Species.
 
-Train a svm on all of the samples of df. The input columns are sepal length, petal length and sepal width the output column is species. Report the 10-fold cross validation accuracy.
+Train a logistic regression, kNN, svm and a multilayer perceptron. The input columns are sepal length, petal length and sepal width and the output column is species. Report the model with the highest 10-fold cross validation accuracy.
