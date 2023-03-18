@@ -49,28 +49,28 @@ def execute_python_statement(statement):
     if "locals_dict" not in st.session_state:
         st.session_state.locals_dict = {}
 
-    lines = statement.split('\n')
+    plot = None
 
-    plot_output = None
-    for line in lines:
-        try:
-            if 'plt.show()' in line:
-                buf = BytesIO()
-                plt.savefig(buf, format='png')
-                plt.close()
-                plot_output = base64.b64encode(buf.getvalue()).decode()
-            else:
-                exec(line, globals(), st.session_state.locals_dict)
-        except Exception as e:
-            sys.stdout = original_stdout
-            return f"Error executing extracted code: {e}. Original code: {statement}", plot_output
+    try:
+        exec(statement, globals(), st.session_state.locals_dict)
+        if "plt" in st.session_state.locals_dict:
+            plt = st.session_state.locals_dict["plt"]
+            buf = BytesIO()
+            plt.savefig(buf, format="png")
+            plot = base64.b64encode(buf.getbuffer()).decode("ascii")
+            plt.clf()
+            del st.session_state.locals_dict["plt"]  # Add this line to remove the plt object from the session state
+    except Exception as e:
+        sys.stdout = original_stdout
+        return f"Error executing extracted code: {e}. Original code: {statement}", None, None
 
     sys.stdout = original_stdout
     output = captured_output.getvalue().strip()
     if output == "":
         output = None
 
-    return output, plot_output
+    return output, plot, None
+
 
 def on_change():
     if st.session_state.user_input:
@@ -91,7 +91,7 @@ def on_change():
                 if code_snippet:
                     try:
                         code = code_snippet.group(1)
-                        output, plot = execute_python_statement(code)
+                        output, plot, _ = execute_python_statement(code)
                         if plot:
                             output = f"```python\n{code.strip()}\n```"
                         else:

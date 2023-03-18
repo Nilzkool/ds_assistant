@@ -1,7 +1,14 @@
 x=5
 
+Show me a random sample of the dataframe. Use pretty table.
+
 What is the maximum in sepal width?
 
+What is the mean petal width for each of the species?
+
+What is the median sepal width for setosa?
+
+What is the mean and standard deviation sepal length?
 
 What is the dot product between columns sepal width and petal length?
 
@@ -11,3 +18,6 @@ Plot a histogram of sepal width.
 
 Plot a scatterplot between sepal length and petal length.
 
+Plot the first two principle components. Ignore the column Id and Species.
+
+Train a svm on all of the samples of df. The input columns are sepal length, petal length and sepal width the output column is species. Report the 10-fold cross validation accuracy.
