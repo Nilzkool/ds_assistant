@@ -29,3 +29,11 @@ Plot a scatterplot between sepal length and petal length. Hightlight the species
 Plot the first two principle components. Ignore the column Id and Species.
 
 Train a logistic regression, kNN, svm and a multilayer perceptron. The input columns are sepal length, petal length and sepal width and the output column is species. Report the model with the highest 10-fold cross validation accuracy.
+
+## titanic prompts
+
+How many passengers survived?
+
+What was the difference in average ticket price between those who survived and those who didn't.
+
+Please provide multiple plots of age, fare, sex and pclass against survived
