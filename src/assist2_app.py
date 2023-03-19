@@ -155,7 +155,7 @@ def system_prompt_text():
     return sys_prompt
 
 def main():
-    st.title("My awesome data science assistant")
+    st.title("My awesome data science assistant (Madsa)")
 
     if "conversation_history" not in st.session_state:
         st.session_state.conversation_history = []
