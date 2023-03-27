@@ -59,6 +59,7 @@ def execute_python_statement(statement):
             plt.savefig(buf, format="png")
             plot = base64.b64encode(buf.getbuffer()).decode("ascii")
             plt.clf()
+            plt.close()
             del st.session_state.locals_dict["plt"]  # Add this line to remove the plt object from the session state
     except Exception as e:
         sys.stdout = original_stdout
@@ -82,25 +83,32 @@ def is_single_line_python_code(code):
 def on_change():
     if st.session_state.user_input:
         output = ""
-
+        print('***User input')
+        print(st.session_state.user_input)
         if is_single_line_python_code(st.session_state.user_input):
             output, plot,_ = execute_python_statement(st.session_state.user_input)
         else:
             try:
+                print('calling chatgpt api...')
                 output = generate_chatgpt_response(st.session_state.user_input, st.session_state.conversation_history, st.session_state.system_prompt)
+                print('Received response...')
                 code_snippet = re.search(r'<\s*(.*?)\s*>', output, re.DOTALL) or re.search(r'```python\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```\n?(.*?)\n?```', output, re.DOTALL) or re.search(r'```(?:python)?\n?(.*?)(?:\n?```)?', output, re.DOTALL)
 
                 if code_snippet:
+                    print('Extracted code...')
                     try:
                         code = code_snippet.group(1)
+                        print('Executing python code...')
                         output, plot, _ = execute_python_statement(code)
                         if plot:
+                            print('Plot found...')
                             output = f"```python\n{code.strip()}\n```"
                         else:
                             output = f"{output}. \n```python\n{code.strip()}\n```"
                     except Exception as e:
                         output = f"Error executing extracted code: {e}. Original ChatGPT response: {output}"
                 else:
+                    print('No extractable code...')
                     plot = None
             except Exception as e:
                 output = f"Error: {e}"
@@ -144,7 +152,7 @@ def display_conversation():
 
 def system_prompt_text():
     sys_prompt = (
-                    "You are a data science assistant. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries are sklearn, numpy, pandas and matplotlib."
+                    "You are a data science assistant called Madsa. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries in your environment are sklearn, numpy, pandas and matplotlib."
                     "All the user prompts will be related to the dataframe df. "
                     "Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. "
                     "The python code must include a print statement to output the solution. "
