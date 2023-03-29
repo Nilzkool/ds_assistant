@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import base64
 import re
+import ast
 
 def handle_file_upload(file):
     """
@@ -40,3 +41,19 @@ def display_conversation():
         if plot:
             st.image(base64.b64decode(plot), caption="Generated plot", use_column_width=True)
             st.code(code, language='python')
+
+def is_single_line_python_code(code):
+    """
+    Check if the given code is a valid single-line Python code.
+    
+    Args:
+        code (str): A string containing Python code.
+        
+    Returns:
+        bool: True if the code is a valid single-line Python code, False otherwise.
+    """
+    try:
+        ast.parse(code)
+        return True
+    except:
+        return False

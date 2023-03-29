@@ -14,7 +14,7 @@ import base64
 import matplotlib.figure
 from chatgpt_api_utils import generate_chatgpt_response
 from system_prompt import system_prompt
-from app_utils import handle_file_upload, display_conversation
+from app_utils import is_single_line_python_code, handle_file_upload, display_conversation
 
 
 # Fetch openai api key
@@ -61,15 +61,15 @@ def execute_python_statement(statement):
 
     return output, plot, None
 
-def is_single_line_python_code(code):
-    try:
-        ast.parse(code)
-        return True
-    except:
-        return False
-
-
 def on_change():
+    """
+    Process user input and update the conversation history.
+    If the user input is a single line of Python code, execute it and store the output.
+    If it's a question or a statement, use the ChatGPT API to generate a response.
+    
+    Args:
+        user_input (str): The user's input (Python code or a question).
+    """
     if st.session_state.user_input:
         output = ""
         print('***User input')
