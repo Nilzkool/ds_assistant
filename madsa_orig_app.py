@@ -1,23 +1,24 @@
-import streamlit as st
 import io
 import time
-from io import StringIO
+from io import StringIO, BytesIO
 import sys
-import pandas as pd
-import openai
+import base64
 import os
 import re
-import ast
+
+import pandas as pd
 import matplotlib.pyplot as plt
-from io import BytesIO
-import base64
 import matplotlib.figure
+import streamlit as st
+import openai
+
+
 from chatgpt_api_utils import generate_chatgpt_response
 from system_prompt import system_prompt
 from app_utils import is_single_line_python_code, handle_file_upload, display_conversation
 
 
-# Fetch openai api key
+# Load OpenAI API key
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 def execute_python_statement(statement):
@@ -109,11 +110,10 @@ def on_change():
         st.session_state.user_input = ""
         st.experimental_rerun()
 
-
-
-def main():
-    st.title("My awesome data science assistant (Madsa)")
-
+def initialize_app():
+    """
+    Intializes app session variables
+    """
     if "conversation_history" not in st.session_state:
         st.session_state.conversation_history = []
 
@@ -130,8 +130,10 @@ def main():
     else:
         st.write("CSV file has been loaded into a pandas dataframe df")
 
+def main():
+    st.title("My awesome data science assistant (Madsa)")
+    initialize_app()
     display_conversation()
-
     user_input_placeholder = st.empty()
     user_input = user_input_placeholder.text_input("Enter your Python statement or ask a question:", key="user_input", on_change=on_change, args=[])
 
