@@ -3,7 +3,7 @@
 MADSA is a conversational app that allows users to perform data science tasks in natural language. With Madsa, one can:
 
 - Upload a tabular dataset as a CSV file on the local RAM and **NOT** on ChatGPT's servers
-- Ask insightful questions about the dataset e.g. *What was the survivor rate for each gender?*
+- Ask insightful questions about the dataset e.g. *What was the survivor rate for each gender in the titanic?*
 - Generate plots by prompting in natural language e.g. *Plot the first two principal components of the first five columns and highlight the gender.*
 - Train machine learning models and/or explore model parameters e.g. *Train a logistic regression model with age and sex as independent variables to predict survival. Which parameter contributed the most?*
 
@@ -79,11 +79,11 @@ consider
 Report True or False if females had a better survivor rate than men
 ```
 
-3. Sometimes Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in  a follow-up prompt to report the correct answer
+3. Sometime Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in  a follow-up prompt to report the correct answer
 
 4. Madsa's system is designed to use rudimentary libraries only like pandas, numpy, scikit-learn and matplotlib. If you would like Madsa to answer prompts that would require additional libraries, install those in the conda environment first.  Then in the prompt, you can specify to Madsa to use this library e.g.
 ```
-Plot a histogram. Use the package Seaborn
+Plot a histogram of passenger age. Use the package Seaborn
 ```
 ## License
 
