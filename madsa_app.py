@@ -73,6 +73,7 @@ def on_change():
     """
     if st.session_state.user_input:
         output = ""
+        plot = None
         print('***User input')
         print(st.session_state.user_input)
         if is_single_line_python_code(st.session_state.user_input):
