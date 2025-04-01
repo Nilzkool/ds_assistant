@@ -57,3 +57,6 @@ def is_single_line_python_code(code):
         return True
     except:
         return False
+
+def dummy():
+    pass
