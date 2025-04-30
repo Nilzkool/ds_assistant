@@ -7,7 +7,6 @@ MADSA is a conversational app that allows users to perform data science tasks in
 - Generate plots by prompting in natural language e.g. *Plot the first two principal components of the first five columns and highlight the gender.*
 - Train machine learning models and/or explore model parameters e.g. *Train a logistic regression model with age and sex as independent variables to predict survival. Which parameter contributed the most?*
 
-
 The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
 **NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
@@ -16,7 +15,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 1. madsa_app.py: The main Streamlit application file.
 2. app_utils.py: Utility functions to support the Streamlit app.
 3. chatgpt_api_utils.py: Utility functions to interact with the OpenAI ChatGPT API.
-4. system_prompt.py: Defines the system prompt for the ChatGPT API.
+4. system_prompt.py: Defines the updated system prompt for the ChatGPT API, now enabling integration with DeepDocs for automated documentation updates.
 5. requirements.txt: Lists the required Python packages to run the app.
 6. test_datasets: A folder containing sample datasets to test the app.
 7. R&D: An old folder containing research and development code.
@@ -85,6 +84,7 @@ Report True or False if females had a better survivor rate than men
 ```
 Plot a histogram of passenger age. Use the package Seaborn
 ```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
