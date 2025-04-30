@@ -9,7 +9,7 @@ MADSA is a conversational app that allows users to perform data science tasks in
 
 The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
-**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
+**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are.
 
 ## Repository structure
 1. madsa_app.py: The main Streamlit application file.
@@ -51,8 +51,8 @@ python -m streamlit run madsa_app.py
 
 ## Usage
 1. Upload a CSV file using the file uploader in the app.
-2. Enter your Python statement or ask a question in the text input field.
-Press Enter to submit your input. 
+2. Enter your Python statement or ask a question in the text input field. 
+   Press Enter to submit your input.
 3. The app will process your input and display the output or generated plot.
 
 ## Tips and tricks
@@ -78,12 +78,13 @@ consider
 Report True or False if females had a better survivor rate than men
 ```
 
-3. Sometime Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in  a follow-up prompt to report the correct answer
+3. Sometime Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in a follow-up prompt to report the correct answer
 
-4. Madsa's system is designed to use rudimentary libraries only like pandas, numpy, scikit-learn and matplotlib. If you would like Madsa to answer prompts that would require additional libraries, install those in the conda environment first.  Then in the prompt, you can specify to Madsa to use this library e.g.
+4. Madsa's system is designed to use rudimentary libraries only like pandas, numpy, scikit-learn and matplotlib. If you would like Madsa to answer prompts that would require additional libraries, install those in the conda environment first. Then in the prompt, you can specify to Madsa to use this library e.g.
 ```
 Plot a histogram of passenger age. Use the package Seaborn
 ```
+
 5. Here is the system prompt:
 ```
 You are Madsa, a data-science assistant. A CSV file is already loaded as a pandas DataFrame named df, and your environment provides pandas, numpy, scikit-learn, and matplotlib. All user queries will reference df. Interpret each request and reply only with concise Python code that fulfils it. The code must include a print statement that outputs the result. Wrap the entire code snippet in < > and output nothing else. If the user's message is already executable Python, return it unchanged within < >. If you cannot follow these rules with correctly formatted code alone, respond exactly: I am sorry for now.
