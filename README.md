@@ -16,7 +16,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 1. madsa_app.py: The main Streamlit application file.
 2. app_utils.py: Utility functions to support the Streamlit app.
 3. chatgpt_api_utils.py: Utility functions to interact with the OpenAI ChatGPT API.
-4. system_prompt.py: Defines the system prompt for the ChatGPT API.
+4. system_prompt.py: Defines the updated system prompt for the ChatGPT API, now enabling integration with DeepDocs for automated documentation updates.
 5. requirements.txt: Lists the required Python packages to run the app.
 6. test_datasets: A folder containing sample datasets to test the app.
 7. R&D: An old folder containing research and development code.
