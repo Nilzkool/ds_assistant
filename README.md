@@ -9,7 +9,7 @@ MADSA is a conversational app that allows users to perform data science tasks in
 
 The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
-**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
+**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are.
 
 ## Repository structure
 1. madsa_app.py: The main Streamlit application file.
@@ -52,7 +52,7 @@ python -m streamlit run madsa_app.py
 ## Usage
 1. Upload a CSV file using the file uploader in the app.
 2. Enter your Python statement or ask a question in the text input field.
-   Press Enter to submit your input. 
+   Press Enter to submit your input.
 3. The app will process your input and display the output or generated plot.
 
 ## Tips and tricks
@@ -67,7 +67,7 @@ sex: sex of the person (categorical variable)
 ticket: ticket costs for the passengers (quantitative variable)
 ```
 
-2. Make the prompt concrete and specific e.g. 
+2. Make the prompt concrete and specific e.g.
 
 Instead of 
 ```
