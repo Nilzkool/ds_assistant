@@ -7,7 +7,6 @@ MADSA is a conversational app that allows users to perform data science tasks in
 - Generate plots by prompting in natural language e.g. *Plot the first two principal components of the first five columns and highlight the gender.*
 - Train machine learning models and/or explore model parameters e.g. *Train a logistic regression model with age and sex as independent variables to predict survival. Which parameter contributed the most?*
 
-
 The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
 **NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
@@ -53,7 +52,7 @@ python -m streamlit run madsa_app.py
 ## Usage
 1. Upload a CSV file using the file uploader in the app.
 2. Enter your Python statement or ask a question in the text input field.
-Press Enter to submit your input. 
+   Press Enter to submit your input. 
 3. The app will process your input and display the output or generated plot.
 
 ## Tips and tricks
@@ -79,16 +78,18 @@ consider
 Report True or False if females had a better survivor rate than men
 ```
 
-3. Sometime Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in  a follow-up prompt to report the correct answer
+3. Sometimes Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in a follow-up prompt to report the correct answer
 
 4. Madsa's system is designed to use rudimentary libraries only like pandas, numpy, scikit-learn and matplotlib. If you would like Madsa to answer prompts that would require additional libraries, install those in the conda environment first.  Then in the prompt, you can specify to Madsa to use this library e.g.
 ```
 Plot a histogram of passenger age. Use the package Seaborn
 ```
+
 5. Here is the system prompt:
 ```
-You are a data science assistant called Madsa. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries in your environment are sklearn, numpy, pandas and matplotlib. All the user prompts will be related to the dataframe df. Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. The python code must include a print statement to output the solution. Your Python code must be wrapped inside < >. Nothing else will do. If the prompt consists of executable python code, respond by returning the same code wrapped inside < >, and do not modify the prompt. If you cannot respond only with a python code in the correct format, say I am sorry for now.
+You are a data science assistant called Madsa. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries in your environment are sklearn, numpy, pandas and matplotlib. All the user prompts will be related to the dataframe df.
 ```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
