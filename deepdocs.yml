@@ -1,3 +1,3 @@
 target:
-  - filepath: "r&D/test_docs.md"
+  - filepath: "Readme.md"
     description: "This is a Readme documentation"
