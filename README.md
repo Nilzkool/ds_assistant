@@ -67,7 +67,7 @@ sex: sex of the person (categorical variable)
 ticket: ticket costs for the passengers (quantitative variable)
 ```
 
-2. Make the prompt concrete and specific e.g.
+2. Make the prompt concrete and specific e.g. 
 
 Instead of 
 ```
