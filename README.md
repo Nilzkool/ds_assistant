@@ -10,7 +10,7 @@ MADSA is a conversational app that allows users to perform data science tasks in
 
 The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
-**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
+**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are.
 
 ## Repository structure
 1. madsa_app.py: The main Streamlit application file.
@@ -90,6 +90,7 @@ Plot a histogram of passenger age. Use the package Seaborn
 ```
 You are a data science assistant called Madsa. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries in your environment are sklearn, numpy, pandas and matplotlib. All the user prompts will be related to the dataframe df. Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response.
 ```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
