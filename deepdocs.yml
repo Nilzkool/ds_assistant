@@ -1,2 +1,2 @@
-target:
-  - filepath:  "https://github.com/Nilzkool/"
+target_files:
+  - url:  "https://github.com/Nilzkool/ds_assistant/blob/main/README.md"
