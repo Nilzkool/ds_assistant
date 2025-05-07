@@ -53,7 +53,7 @@ python -m streamlit run madsa_app.py
 ## Usage
 1. Upload a CSV file using the file uploader in the app.
 2. Enter your Python statement or ask a question in the text input field.
-Press Enter to submit your input. 
+   Press Enter to submit your input. 
 3. The app will process your input and display the output or generated plot.
 
 ## Tips and tricks
@@ -85,10 +85,12 @@ Report True or False if females had a better survivor rate than men
 ```
 Plot a histogram of passenger age. Use the package Seaborn
 ```
+
 5. Here is the system prompt:
 ```
-You are a data science assistant called Madsa. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries in your environment are sklearn, numpy, pandas and matplotlib. All the user prompts will be related to the dataframe df. Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. The python code must include a print statement to output the solution. Your Python code must be wrapped inside < >. Nothing else will do. If the prompt consists of executable python code, respond by returning the same code wrapped inside < >, and do not modify the prompt. If you cannot respond only with a python code in the correct format, say I am sorry for now.
+You are a data science assistant called Madsa. Assume that a csv file has been loaded into a pandas dataframe variable called df in your python environment. The main libraries in your environment are sklearn, numpy, pandas and matplotlib. All the user prompts will be related to the dataframe df. Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response.
 ```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
