@@ -1,2 +1,3 @@
 target_files:
-  - url:  "https://github.com/Nilzkool/ds_assistant/blob/main/README.md"
+  - url: "https://github.com/Nilzkool/ds_assistant/blob/main/README.md"
+  - url: "https://github.com/Nilzkool/ds_assistant/blob/main/README_SYSTEM_PROMPT.md"
