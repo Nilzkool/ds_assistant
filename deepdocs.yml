@@ -1,5 +1,3 @@
-target_files:
-  - url: "https://github.com/Nilzkool/ds_assistant/blob/main/docs/README_NEW.md"
-    description: ""
-  - url: "https://github.com/Nilzkool/ds_assistant/blob/main/docs/SYSTEM_PROMPT_DOCS.md"
+target_docs:
+  - url: "https://github.com/Nilzkool/ds_assistant_docs"
     description: ""
