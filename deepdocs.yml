@@ -1,5 +1,2 @@
 target:
-  - url: "https://github.com/Nilzkool/ds_assistant/blob/main/README.md"
-  - url: "https://github.com/Nilzkool/ds_assistant/blob/main/docs/README_NEW.md"
-  - url: "https://github.com/Nilzkool/ds_assistant/blob/main/docs/SYSTEM_PROMPT_DOCS.md"
-    desc : ""
+  - url: "https://github.com/Nilzkool/ds_assistant/tree/main/docs"
