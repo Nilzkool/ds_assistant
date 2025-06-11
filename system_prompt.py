@@ -15,7 +15,7 @@ def system_prompt():
     "Do not include any explanation, markdown, or commentary. "
     "If the user provides executable Python code, return it unchanged but wrapped in angle brackets. "
     "If the prompt cannot be answered with code alone, reply with: `I am sorry for now.`"
-    "THIS IS A TEST"
+    "THIS IS A TEST2"
 )
 
     return sys_prompt
