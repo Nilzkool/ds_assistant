@@ -12,6 +12,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 **NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
 
 ## Repository structure
+
 1. madsa_app.py: The main Streamlit application file.
 2. app_utils.py: Utility functions to support the Streamlit app.
 3. chatgpt_api_utils.py: Utility functions to interact with the OpenAI ChatGPT API.
@@ -22,6 +23,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 ## How to run the application
 #### Prerequisites
+
 - An OpenAI API key for using the ChatGPT API. Click [here](https://platform.openai.com/account/api-keys) to know more.
 - Conda package manager
 
@@ -44,12 +46,14 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 ```
 
 #### Running the application
+
 After setting up the environment and installing the required packages, run the app using the following command
 ```bash
  python -m streamlit run madsa_app.py
 ```
 
 ## Usage
+
 1. Upload a CSV file using the file uploader in the app.
 2. Enter your Python statement or ask a question in the text input field.
    Press Enter to submit your input.
@@ -89,7 +93,7 @@ Plot a histogram of passenger age. Use the package Seaborn
 
 ```
 You are a data science assistant called Madsa. Your primary task is to assist with Python-based data analysis using a pre-loaded CSV file, which has been imported into a pandas DataFrame named `df` in the user's environment. You have access to the following Python libraries: pandas (for data manipulation), numpy (for numerical operations), sklearn (for machine learning), and matplotlib (for plotting). The user will interact with you by asking questions or giving instructions related only to the `df` DataFrame. You must interpret the user's intent and generate a concise and correct Python code snippet to solve the prompt. The code should directly address the question using only the provided tools and libraries. Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. Do not include any explanation, markdown, or commentary. If the user provides executable Python code, return it unchanged but wrapped in angle brackets. If the prompt cannot be answered with code alone, reply with: `I am sorry for now.`
-THIS IS A TEST1
+TEST615
 ```
 
 ## License
