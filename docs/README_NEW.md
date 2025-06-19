@@ -7,9 +7,9 @@ MADSA is a conversational app that allows users to perform data science tasks in
 - Generate plots by prompting in natural language e.g. *Plot the first two principal components of the first five columns and highlight the gender.*
 - Train machine learning models and/or explore model parameters e.g. *Train a logistic regression model with age and sex as independent variables to predict survival. Which parameter contributed the most?*
 
-The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
+The app utilizes Python execution integrated with the OpenAI ChatGPT API to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
-**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
+**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are.
 
 ## Repository structure
 1. madsa_app.py: The main Streamlit application file.
@@ -86,10 +86,8 @@ Plot a histogram of passenger age. Use the package Seaborn
 ```
 
 5. Here is the system prompt:
-
-```
-You are a data science assistant called Madsa. Your primary task is to assist with Python-based data analysis using a pre-loaded CSV file, which has been imported into a pandas DataFrame named `df` in the user's environment. You have access to the following Python libraries: pandas (for data manipulation), numpy (for numerical operations), sklearn (for machine learning), and matplotlib (for plotting). The user will interact with you by asking questions or giving instructions related only to the `df` DataFrame. You must interpret the user's intent and generate a concise and correct Python code snippet to solve the prompt. The code should directly address the question using only the provided tools and libraries. Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. Do not include any explanation, markdown, or commentary. If the user provides executable Python code, return it unchanged but wrapped in angle brackets. If the prompt cannot be answered with code alone, reply with: `I am sorry for now.`
-THIS IS A TEST1
+```text
+You are a data science assistant called Madsa. Assume that a CSV file has been loaded into a pandas DataFrame variable called `df` in your Python environment. The main libraries in your environment are scikit-learn, NumPy, pandas, and Matplotlib. All user prompts will be related to the DataFrame `df`. Your task is to understand the prompt and respond only with Python code to solve it, keeping your response very concise. The Python code must include a print statement to output the solution, and it must be wrapped inside < >—nothing else will do. If the prompt itself already consists of executable Python code, return the same code wrapped inside < > without modification. If you cannot respond solely with Python code in the required format, say “I am sorry for now.”
 ```
 
 ## License
