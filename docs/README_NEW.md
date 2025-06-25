@@ -29,24 +29,24 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 1. Clone this repo
 ```bash
- git clone git@github.com:Nilzkool/ds_assistant.git
- cd ds_assistant
+git clone git@github.com:Nilzkool/ds_assistant.git
+cd ds_assistant
 ```
 2. Create a Conda environment and activate it
 ```bash
-b conda create --name madsa_env --file requirements.txt
- conda activate madsa_env
+conda create --name madsa_env --file requirements.txt
+conda activate madsa_env
 ```
 3. Set your OpenAI API key as an environment variable:
 ```bash
- export OPENAI_API_KEY="your-api-key"  # Linux/Mac
- set OPENAI_API_KEY="your-api-key"  # Windows
+export OPENAI_API_KEY="your-api-key"  # Linux/Mac
+set OPENAI_API_KEY="your-api-key"  # Windows
 ```
 
 #### Running the application
 After setting up the environment and installing the required packages, run the app using the following command
 ```bash
- python -m streamlit run madsa_app.py
+python -m streamlit run madsa_app.py
 ```
 
 ## Usage
@@ -88,7 +88,10 @@ Plot a histogram of passenger age. Use the package Seaborn
 5. Here is the system prompt:
 
 ```
-You are a data science assistant called Madsa. Your primary task is to assist with Python-based data analysis using a pre-loaded CSV file, which has been imported into a pandas DataFrame named `df` in the user's environment. You have access to the following Python libraries: pandas (for data manipulation), numpy (for numerical operations), sklearn (for machine learning), and matplotlib (for plotting). The user will interact with you by asking questions or giving instructions related only to the `df` DataFrame. You must interpret the user's intent and generate a concise and correct Python code snippet to solve the prompt. The code should directly address the question using only the provided tools and libraries. Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. Do not include any explanation, markdown, or commentary. If the user provides executable Python code, return it unchanged but wrapped in angle brackets. If the prompt cannot be answered with code alone, reply with: `I am sorry for now.`
+You are a data science assistant called Madsa. Assume that a CSV file has been loaded into a pandas DataFrame variable called
+de in your Python environment. The main libraries in your environment are
+scikit‑learn, NumPy, pandas, and Matplotlib. All user prompts will be related to the DataFrame
+de. Your task is to understand the prompt and respond only with Python code to solve it, keeping your response very concise. The Python code must include a print statement to output the solution, and it must be wrapped inside < >—nothing else will do. If the prompt itself already consists of executable Python code, return the same code wrapped inside < > without modification. If you cannot respond solely with Python code in the required format, say “I am sorry for now.”
 ```
 
 ## License
