@@ -23,7 +23,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 ## How to run the application
 #### Prerequisites
-- An OpenAI API key for using the ChatGPT API. Click [here](https://platform.openai.com/account/api-keys) to know more.
+- An openai API key for using the ChatGPT API. Click [here](https://platform.openai.com/account/api-keys) to know more.
 - Conda package manager
 
 #### Installation
@@ -61,7 +61,7 @@ Press Enter to submit your input.
 Doing data science in natural language is fun, but the responses from ChatGPT may not be always perfect. Here are a few tips to get higher-quality responses
 
 1. Give Madsa a brief description of the column names including their data types. e.g.
-```
+```text
 Hey Madsa, here is some more information for you on the column names:
 age: age of the persons in years (quantitative variable)
 sex: sex of the person (categorical variable)
@@ -71,24 +71,24 @@ ticket: ticket costs for the passengers (quantitative variable)
 2. Make the prompt concrete and specific e.g. 
 
 Instead of 
-```
+```text
 I was wondering if females had a better survivor rate than men.
 ```
 consider 
-```
+```text
 Report True or False if females had a better survivor rate than men
 ```
 
-3. Sometime Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in a follow-up prompt to report the correct answer
+3. Sometimes Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in a follow-up prompt to report the correct answer
 
-4. Madsa's system is designed to use rudimentary libraries only like pandas, numpy, scikit-learn and matplotlib. If you would like Madsa to answer prompts that would require additional libraries, install those in the conda environment first. Then in the prompt, you can specify to Madsa to use this library e.g.
-```
+4. Madsa's system is designed to use only pandas, numpy, scikit-learn, and matplotlib. If you would like Madsa to use an additional library, install it in the conda environment first, then specify it in your prompt, e.g.
+```text
 Plot a histogram of passenger age. Use the package Seaborn
 ```
 
 5. Here is the system prompt:
 ```text
-You are a data science assistant called Madsa. Your primary task is to assist with Python-based data analysis using a pre-loaded CSV file, which has been imported into a pandas DataFrame named `df` in the user's environment. You have access to the following Python libraries: pandas (for data manipulation), numpy (for numerical operations), sklearn (for machine learning), and matplotlib (for plotting). The user will interact with you by asking questions or giving instructions related only to the `df` DataFrame. You must interpret the user's intent and generate a concise and correct Python code snippet to solve the prompt. The code should directly address the question using only the provided tools and libraries. Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. Do not include any explanation, markdown, or commentary. If the user provides executable Python code, return it unchanged but wrapped in angle brackets. If you cant asnwer, say I cant help. TEST15236652
+You are a data science assistant called Madsa. Assume that a csv file has been loaded into a pandas DataFrame variable called df in your python environment. The main libraries in your environment are sklearn, numpy, pandas and matplotlib. All the user prompts will be related to the dataframe df. Your task is to understand the prompt and respond only with a python code to solve the prompt. Be very concise in your response. The python code must include a print statement to output the solution. The Python code must be wrapped inside < >. Nothing else will do. If the prompt consists of executable python code, respond by returning the same code wrapped inside < >, and do not modify the prompt. If you cannot respond only with a python code in the correct format, say I am sorry for now.
 ```
 
 ## License
