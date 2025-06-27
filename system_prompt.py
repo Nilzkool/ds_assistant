@@ -14,7 +14,7 @@ def system_prompt():
     "Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. "
     "Do not include any explanation, markdown, or commentary. "
     "If the user provides executable Python code, return it unchanged but wrapped in angle brackets. "
-    "If you cant asnwer, say I cant help. TEST36756985"
+    "If you cant asnwer, say I am sorry I  cant help"
   
 )
 
