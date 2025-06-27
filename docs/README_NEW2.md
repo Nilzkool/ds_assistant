@@ -23,14 +23,16 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 ## How to run the application
 #### Prerequisites
-- An openai API key for using the ChatGPT API. Click [here](https://platform.openai.com/account/api-keys) to know more.
+- An OpenAI API key for using the ChatGPT API. Click [here](https://platform.openai.com/account/api-keys) to know more.
 - Conda package manager
 
 #### Installation
 
 1. Clone this repo
 ```bash
-git clone git@github.com:Nilzkool/ds_assistant.git
+action
+# corrected clone command to match repository
+clone git@github.com:Nilzkool/ds_assistant.git
 cd ds_assistant
 ```
 2. Create a Conda environment and activate it
