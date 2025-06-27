@@ -23,7 +23,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 ## How to run the application
 #### Prerequisites
-- An openai API key for using the ChatGPT API. Click [here](https://platform.openai.com/account/api-keys) to know more.
+- An OpenAI API key for using the ChatGPT API. Click [here](https://platform.openai.com/account/api-keys) to know more.
 - Conda package manager
 
 #### Installation
@@ -81,14 +81,14 @@ Report True or False if females had a better survivor rate than men
 
 3. Sometimes Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in a follow-up prompt to report the correct answer
 
-4. Madsa's system is designed to use only pandas, numpy, scikit-learn, and matplotlib. If you would like Madsa to use an additional library, install it in the conda environment first, then specify it in your prompt, e.g.
+4. Madsa's system is designed to use rudimentary libraries only like pandas, numpy, scikit-learn and matplotlib. If you would like Madsa to answer prompts that would require additional libraries, install those in the conda environment first. Then in the prompt, you can specify to Madsa to use this library e.g.
 ```text
 Plot a histogram of passenger age. Use the package Seaborn
 ```
 
 5. Here is the system prompt:
-```text
-You are a data science assistant called Madsa. Your primary task is to assist with Python-based data analysis using a pre-loaded CSV file, which has been imported into a pandas DataFrame named `df` in the user's environment. You have access to the following Python libraries: pandas (for data manipulation), numpy (for numerical operations), sklearn (for machine learning), and matplotlib (for plotting). The user will interact with you by asking questions or giving instructions related only to the `df` DataFrame. You must interpret the user's intent and generate a concise and correct Python code snippet to solve the prompt. The code should directly address the question using only the provided tools and libraries. Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. Do not include any explanation, markdown, or commentary. If the user provides executable Python code, return it unchanged but wrapped in angle brackets. If you cant asnwer, say I cant help. TEST3675
+```
+You are a data science assistant called Madsa. Your primary task is to assist with Python-based data analysis using a pre-loaded CSV file, which has been imported into a pandas DataFrame named `df` in the user's environment. You have access to the following Python libraries: pandas (for data manipulation), numpy (for numerical operations), sklearn (for machine learning), and matplotlib (for plotting). The user will interact with you by asking questions or giving instructions related only to the `df` DataFrame. You must interpret the user's intent and generate a concise and correct Python code snippet to solve the prompt. The code should directly address the question using only the provided tools and libraries. Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. Do not include any explanation, markdown, or commentary. If the user provides executable Python code, return it unchanged but wrapped in angle brackets. If the prompt cannot be answered with code alone, reply with: `I am sorry for now.`THIS IS A TEST
 ```
 
 ## License
