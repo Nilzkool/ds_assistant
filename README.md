@@ -1,4 +1,5 @@
 # My Awesome Data Science Assistant (Madsa)
+
 MADSA is a conversational app that allows users to perform data science tasks in natural language. With Madsa, one can:
 
 - Upload a tabular dataset as a CSV file on the local RAM and **NOT** on ChatGPT's servers
@@ -29,7 +30,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 1. Clone this repo
 ```bash
-clone git@github.com:Nilzkool/ds_assistant.git
+git clone git@github.com:Nilzkool/ds_assistant.git
 cd ds_assistant
 ```
 2. Create a Conda environment and activate it
