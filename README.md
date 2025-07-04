@@ -10,7 +10,7 @@ MADSA is a conversational app that allows users to perform data science tasks in
 
 The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
-**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
+**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are.
 
 ## Repository structure
 1. madsa_app.py: The main Streamlit application file.
@@ -30,7 +30,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 1. Clone this repo
 ```bash
-git clone git@github.com:Nilzkool/ds_assistant.git
+clone git@github.com:Nilzkool/ds_assistant.git
 cd ds_assistant
 ```
 2. Create a Conda environment and activate it
