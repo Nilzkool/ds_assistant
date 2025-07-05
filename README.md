@@ -30,7 +30,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 1. Clone this repo
 ```bash
-git clone git@github.com:Nilzkool/ds_assistant.git
+clone git@github.com:Nilzkool/ds_assistant.git
 cd ds_assistant
 ```
 2. Create a Conda environment and activate it
@@ -47,7 +47,7 @@ set OPENAI_API_KEY="your-api-key"  # Windows
 #### Running the application
 After setting up the environment and installing the required packages, run the app using the following command
 ```bash
-python -m streamlit run madsa_app.py
+cpython -m streamlit run madsa_app.py
 ```
 
 ## Usage
