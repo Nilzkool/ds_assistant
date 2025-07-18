@@ -10,7 +10,7 @@ MADSA is a conversational app that allows users to perform data science tasks in
 
 The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to process questions and generate responses. Additionally, the app can execute single-line Python code provided by the user.
 
-**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are. 
+**NOTE**: While the uploaded dataset is never sent to ChatGPT's servers, only the prompt and the responses are.
 
 ## Repository structure
 1. madsa_app.py: The main Streamlit application file.
@@ -30,7 +30,7 @@ The app utilizes an iPython parameter augmented by OpenAI ChatGPT API's to proce
 
 1. Clone this repo
 ```bash
-clone git@github.com:Nilzkool/ds_assistant.git
+git clone git@github.com:Nilzkool/ds_assistant.git
 cd ds_assistant
 ```
 2. Create a Conda environment and activate it
@@ -53,43 +53,40 @@ python -m streamlit run madsa_app.py
 ## Usage
 1. Upload a CSV file using the file uploader in the app.
 2. Enter your Python statement or ask a question in the text input field.
-Press Enter to submit your input. 
+   Press Enter to submit your input. 
 3. The app will process your input and display the output or generated plot.
 
 ## Tips and tricks
 
-Doing data science in natural language is fun, but the responses from ChatGPT may not be always perfect. Here are a few tips to get higher-quality responses
+Doing data science in natural language is fun, but the responses from ChatGPT may not be always perfect. Here are a few tips to get higher-quality responses:
 
 1. Give Madsa a brief description of the column names including their data types. e.g.
-```
-Hey Madsa, here is some more information for you on the column names:
-age: age of the persons in years (quantitative variable)
-sex: sex of the person (categorical variable)
-ticket: ticket costs for the passengers (quantitative variable)
-```
+   ```text
+   Hey Madsa, here is some more information for you on the column names:
+   age: age of the persons in years (quantitative variable)
+   sex: sex of the person (categorical variable)
+   ticket: ticket costs for the passengers (quantitative variable)
+   ```
 
-2. Make the prompt concrete and specific e.g. 
+2. Make the prompt concrete and specific. For example:
+   ```text
+   Instead of:
+   I was wondering if females had a better survivor rate than men.
+   Consider:
+   Report True or False if females had a better survivor rate than men
+   ```
 
-Instead of 
-```
-I was wondering if females had a better survivor rate than men.
-```
-consider 
-```
-Report True or False if females had a better survivor rate than men
-```
-
-3. Sometime Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in a follow-up prompt to report the correct answer
+3. Sometimes Madsa may output a lot more information that may or may not contain your answer. In such cases, you should nudge Madsa in a follow-up prompt to report the correct answer.
 
 4. Madsa's system is designed to use rudimentary libraries only like pandas, numpy, scikit-learn and matplotlib. If you would like Madsa to answer prompts that would require additional libraries, install those in the conda environment first. Then in the prompt, you can specify to Madsa to use this library e.g.
-```
-Plot a histogram of passenger age. Use the package Seaborn
-```
+   ```text
+   Plot a histogram of passenger age. Use the package Seaborn
+   ```
 
-5. Here is the system prompt:
-```
-You are a data science assistant called Madsa. Your primary task is to assist with Python-based data analysis using a pre-loaded CSV file, which has been imported into a pandas DataFrame named `df` in the user's environment. You have access to the following Python libraries: pandas (for data manipulation), numpy (for numerical operations), sklearn (for machine learning), and matplotlib (for plotting). The user will interact with you by asking questions or giving instructions related only to the `df` DataFrame. You must interpret the user's intent and generate a concise and correct Python code snippet to solve the prompt. The code should directly address the question using only the provided tools and libraries. Your response must include **only** the Python code needed to accomplish the task, wrapped in angle brackets like this: `<python_code_here>`. Do not include any explanation, markdown, or commentary. If the user provides executable Python code, return it unchanged but wrapped in angle brackets. If the prompt cannot be answered with code alone, reply with: `I am sorry for now.`THIS IS A TEST
-```
+5. Here is the system prompt for Madsa:
+   ```text
+   You are a data science assistant called Madsa. Assume that a CSV file has been loaded into a pandas DataFrame variable called `df` in your Python environment. The main libraries in your environment are scikit-learn, NumPy, pandas, and Matplotlib. All user prompts will be related to the DataFrame `df`. Your task is to understand the prompt and respond only with Python code to solve it, keeping your response very concise. The Python code must include a print statement to output the solution. Your Python code must be wrapped inside `< >`. Nothing else will do. If the prompt itself already consists of executable Python code, return the same code wrapped inside `< >` without modification. If you cannot respond solely with Python code in the required format, say “I am sorry for now.”
+   ```
 
 ## License
 
