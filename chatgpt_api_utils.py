@@ -1,6 +1,6 @@
 import openai
-
-def generate_chatgpt_response(prompt, conversation_history, system_prompt, model_engine = 'gpt-3.5-turbo', temperature = 0):
+# Hello world update
+def generate_chatgpt_response(prompt, conversation_history, system_prompt, model_engine = 'gpt-4o', temperature = 0.5):
     """
     Generate a response from ChatGPT for a given prompt and conversation history.
     
