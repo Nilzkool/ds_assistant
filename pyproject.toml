@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "madsa-app"
+version = "0.1.0"
+description = "Madsa: a conversational data science assistant that runs pandas/sklearn/matplotlib code generated from natural language prompts."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "streamlit>=1.32,<2",
+    "pandas>=2.0,<3",
+    "numpy>=1.26,<2",
+    "scikit-learn>=1.4,<2",
+    "matplotlib>=3.8,<4",
+    "openai==0.27.*",
+    "python-dotenv>=1.0,<2",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

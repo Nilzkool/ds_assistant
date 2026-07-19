@@ -1,4 +1,0 @@
-target:
-  - url: "docs/"
-reinit: "random-string"
-ignore: []
