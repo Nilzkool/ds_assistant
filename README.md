@@ -29,8 +29,8 @@ Dockerfile               # Container build
 ## How to run the application
 
 ### Prerequisites
-- Python 3.11+
 - An OpenAI API key. Click [here](https://platform.openai.com/account/api-keys) to know more.
+- Either **Python 3.11+** (to run locally) or **Docker** (to run in a container) — you don't need both.
 
 ### Option 1: Run locally with pip
 
@@ -39,7 +39,7 @@ Dockerfile               # Container build
 git clone git@github.com:Nilzkool/ds_assistant.git
 cd ds_assistant
 ```
-2. Create a virtual environment and install the package
+2. Create a virtual environment (must be Python 3.11+) and install the package
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
@@ -50,22 +50,34 @@ pip install -e .
 export OPENAI_API_KEY="your-api-key"  # Linux/Mac
 set OPENAI_API_KEY="your-api-key"     # Windows
 ```
-or by copying `.env.example` to `.env` and filling in your key.
-
+or by copying `.env.example` to `.env` and filling in your key:
+```bash
+cp .env.example .env  # then edit .env with your key
+```
 4. Run the app
 ```bash
 streamlit run src/madsa/app.py
 ```
+5. Streamlit will print a local URL (typically [http://localhost:8501](http://localhost:8501)) — open it in your browser.
 
 ### Option 2: Run with Docker
 
-1. Copy `.env.example` to `.env` and fill in your `OPENAI_API_KEY`.
-2. Build and run the image
+No local Python setup required — just Docker.
+
+1. Clone this repo (see step 1 above) and `cd` into it.
+2. Copy `.env.example` to `.env` and fill in your `OPENAI_API_KEY`.
+```bash
+cp .env.example .env  # then edit .env with your key
+```
+3. Build the image
 ```bash
 docker build -t madsa .
+```
+4. Run the container
+```bash
 docker run -p 8501:8501 --env-file .env madsa
 ```
-3. Open [http://localhost:8501](http://localhost:8501) in your browser.
+5. Open [http://localhost:8501](http://localhost:8501) in your browser.
 
 ## Usage
 1. Upload a CSV file using the file uploader in the app.
@@ -108,4 +120,4 @@ You can try the app quickly using the sample datasets and prompts in [`test_data
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENSE)
